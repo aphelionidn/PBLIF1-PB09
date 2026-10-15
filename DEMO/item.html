@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Barang — Pinjam.in</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="logo" href="student.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a>
+        <nav class="nav"><a class="active" href="student.html"><span class="icon" data-icon="home"></span>Katalog</a><a href="loans.html"><span class="icon" data-icon="calendar"></span>Peminjaman Saya</a><a href="profile.html"><span class="icon" data-icon="user"></span>Profil</a></nav>
+        <div class="sidebar-user"><span class="avatar">AP</span><span><strong>Aditya Anandika Putra</strong><small>Mahasiswa · 3312601001</small></span></div>
+      </aside>
+      <header class="mobile-head"><a class="logo" href="student.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a></header>
+      <main class="content">
+        <div class="topbar"><span class="breadcrumb">Pinjam.in / Katalog / Proyektor Epson</span><a class="btn secondary small" href="student.html">Kembali</a></div>
+        <header class="page-head"><div><p class="eyebrow">Elektronik</p><h1>Proyektor Epson</h1><p>Proyektor kelas dengan koneksi HDMI dan resolusi Full HD.</p></div><button class="favorite active icon" data-favorite aria-label="Favorit" data-icon="heart"></button></header>
+        <div class="split">
+          <section class="card">
+            <div class="item-art" style="min-height: 320px"><span class="icon" data-icon="monitor"></span></div>
+            <div class="grid-2" style="margin-top: 16px">
+              <div class="card"><small>Stok total</small><h2 style="margin: 6px 0 0">5 unit</h2></div>
+              <div class="card"><small>Tersedia hari ini</small><h2 style="margin: 6px 0 0; color: var(--success)">4 unit</h2></div>
+            </div>
+          </section>
+          <section class="card">
+            <h2>Ajukan peminjaman</h2>
+            <div class="field-grid">
+              <div class="field"><label for="start">Tanggal mulai</label><input id="start" type="date" value="2026-10-08" /></div>
+              <div class="field"><label for="end">Tanggal kembali</label><input id="end" type="date" value="2026-10-10" /></div>
+            </div>
+            <div class="field" style="margin-top: 14px"><label for="qty">Jumlah</label><select id="qty"><option>1 unit</option><option>2 unit</option><option>3 unit</option></select></div>
+            <div class="field" style="margin-top: 14px"><label for="purpose">Keperluan</label><textarea id="purpose" rows="4" placeholder="Contoh: Presentasi tugas kelompok di R. 301"></textarea></div>
+            <div class="demo-note">Stok tersedia untuk rentang ini: <strong>4 unit</strong>. Durasi maksimal peminjaman adalah 3 hari.</div>
+            <button class="btn full" data-booking-submit><span class="icon" data-icon="calendar"></span>Ajukan Sekarang</button>
+            <button class="btn secondary full" style="margin-top: 9px" data-cart-add><span class="icon" data-icon="cart"></span>Tambah ke Keranjang</button>
+          </section>
+        </div>
+      </main>
+      <nav class="bottom-nav"><a class="active" href="student.html"><span class="icon" data-icon="home"></span>Katalog</a><a href="loans.html"><span class="icon" data-icon="calendar"></span>Pinjaman</a><a href="profile.html"><span class="icon" data-icon="user"></span>Profil</a><a href="index.html"><span class="icon" data-icon="return"></span>Keluar</a></nav>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

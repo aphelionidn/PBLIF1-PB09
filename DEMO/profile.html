@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil — Pinjam.in</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="logo" href="student.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a>
+        <nav class="nav"><a href="student.html"><span class="icon" data-icon="home"></span>Katalog</a><a href="loans.html"><span class="icon" data-icon="calendar"></span>Peminjaman Saya</a><a class="active" href="profile.html"><span class="icon" data-icon="user"></span>Profil</a></nav>
+        <div class="sidebar-user"><span class="avatar">AP</span><span><strong>Aditya Anandika Putra</strong><small>Mahasiswa · 3312601001</small></span></div>
+      </aside>
+      <header class="mobile-head"><a class="logo" href="student.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a></header>
+      <main class="content">
+        <div class="topbar"><span class="breadcrumb">Pinjam.in / Profil</span></div>
+        <header class="page-head"><div><h1>Profil</h1><p>Kelola data akun dan preferensi tampilan.</p></div></header>
+        <div class="profile-grid">
+          <section class="card profile-main">
+            <span class="avatar">AP</span>
+            <h2>Aditya Anandika Putra</h2>
+            <p>Mahasiswa · 3312601001</p>
+            <span class="pill">Akun aktif</span>
+            <a class="btn danger full" style="margin-top: 28px" href="index.html">Keluar dari Demo</a>
+          </section>
+          <div class="list">
+            <section class="card">
+              <h2>Informasi akun</h2>
+              <div class="field-grid">
+                <div class="field"><label for="name">Nama lengkap</label><input id="name" value="Aditya Anandika Putra" /></div>
+                <div class="field"><label for="id">NIM</label><input id="id" value="3312601001" readonly /></div>
+                <div class="field"><label for="email">Email</label><input id="email" type="email" value="3312601001@students.polibatam.ac.id" readonly /></div>
+                <div class="field"><label for="city">Kota</label><input id="city" value="Batam" /></div>
+              </div>
+              <button class="btn" style="margin-top: 16px" data-profile-save>Simpan Perubahan</button>
+            </section>
+            <section class="card">
+              <h2>Preferensi</h2>
+              <div class="settings">
+                <div class="setting"><span><strong>Mode gelap</strong><small>Ubah tema demo pada perangkat ini</small></span><button class="switch" data-switch="dark" role="switch" aria-checked="false" aria-label="Mode gelap"></button></div>
+                <div class="setting"><span><strong>Mode performa</strong><small>Kurangi animasi pada perangkat lambat</small></span><button class="switch on" data-switch="performance" role="switch" aria-checked="true" aria-label="Mode performa"></button></div>
+                <div class="setting"><span><strong>Notifikasi email</strong><small>Kirim pembaruan status melalui email</small></span><button class="switch on" data-switch="email" role="switch" aria-checked="true" aria-label="Notifikasi email"></button></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+      <nav class="bottom-nav"><a href="student.html"><span class="icon" data-icon="home"></span>Katalog</a><a href="loans.html"><span class="icon" data-icon="calendar"></span>Pinjaman</a><a class="active" href="profile.html"><span class="icon" data-icon="user"></span>Profil</a><a href="index.html"><span class="icon" data-icon="return"></span>Keluar</a></nav>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
