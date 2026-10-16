@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Admin — Pinjam.in</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="logo" href="admin.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a>
+        <nav class="nav" aria-label="Navigasi admin">
+          <a href="admin.html"><span class="icon" data-icon="grid"></span>Dashboard</a>
+          <a href="admin-items.html"><span class="icon" data-icon="box"></span>Kelola Barang</a>
+          <a href="admin-loans.html"><span class="icon" data-icon="clipboard"></span>Pengajuan</a>
+          <a class="active" href="admin-profile.html"><span class="icon" data-icon="user"></span>Profil</a>
+        </nav>
+        <div class="sidebar-user"><span class="avatar admin">AD</span><span><strong>Admin Pinjam.in</strong><small>Administrator</small></span></div>
+      </aside>
+
+      <header class="mobile-head">
+        <a class="logo" href="admin.html"><span class="logo-mark icon" data-icon="box"></span><span>Pinjam<em>.in</em></span></a>
+      </header>
+
+      <main class="content">
+        <div class="topbar"><span class="breadcrumb">Pinjam.in / Profil Admin</span></div>
+        <header class="page-head"><div><h1>Profil Admin</h1><p>Kelola informasi akun dan preferensi demo.</p></div></header>
+
+        <div class="profile-grid">
+          <section class="card profile-main">
+            <span class="avatar admin">AD</span>
+            <h2>Admin Pinjam.in</h2>
+            <p>Administrator · 3312601048</p>
+            <span class="pill">Akun aktif</span>
+            <a class="btn danger full" style="margin-top: 28px" href="index.html">Keluar dari Demo</a>
+          </section>
+
+          <div class="list">
+            <section class="card">
+              <h2>Informasi akun</h2>
+              <div class="field-grid">
+                <div class="field"><label for="admin-name">Nama lengkap</label><input id="admin-name" value="Admin Pinjam.in" /></div>
+                <div class="field"><label for="admin-id">NIM/NIP</label><input id="admin-id" value="3312601048" readonly /></div>
+                <div class="field"><label for="admin-email">Email</label><input id="admin-email" type="email" value="3312601048@students.polibatam.ac.id" readonly /></div>
+                <div class="field"><label for="admin-city">Kota</label><input id="admin-city" value="Batam" /></div>
+              </div>
+              <button class="btn" style="margin-top: 16px" data-admin-profile-save>Simpan Perubahan</button>
+            </section>
+
+            <section class="card">
+              <h2>Preferensi</h2>
+              <div class="settings">
+                <div class="setting"><span><strong>Mode gelap</strong><small>Ubah tema demo pada perangkat ini</small></span><button class="switch" data-switch="dark" role="switch" aria-checked="false" aria-label="Mode gelap"></button></div>
+                <div class="setting"><span><strong>Mode performa</strong><small>Kurangi animasi pada perangkat lambat</small></span><button class="switch on" data-switch="performance" role="switch" aria-checked="true" aria-label="Mode performa"></button></div>
+                <div class="setting"><span><strong>Notifikasi pengajuan</strong><small>Tampilkan pembaruan pengajuan baru</small></span><button class="switch on" data-switch="admin-notifications" role="switch" aria-checked="true" aria-label="Notifikasi pengajuan"></button></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Navigasi admin">
+        <a href="admin.html"><span class="icon" data-icon="grid"></span>Dashboard</a>
+        <a href="admin-items.html"><span class="icon" data-icon="box"></span>Barang</a>
+        <a href="admin-loans.html"><span class="icon" data-icon="clipboard"></span>Pengajuan</a>
+        <a class="active" href="admin-profile.html"><span class="icon" data-icon="user"></span>Profil</a>
+      </nav>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

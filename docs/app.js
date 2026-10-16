@@ -109,6 +109,7 @@ document.querySelectorAll("[data-switch]").forEach((button) => {
       storage.set("pinjaminDemoPerformance", String(enabled))
     }
     if (key === "email") storage.set("pinjaminDemoEmail", String(enabled))
+    if (key === "admin-notifications") storage.set("pinjaminDemoAdminNotifications", String(enabled))
     showToast(`${button.getAttribute("aria-label")} ${enabled ? "diaktifkan" : "dinonaktifkan"}`)
   })
 })
@@ -146,6 +147,16 @@ document.querySelector("[data-profile-save]")?.addEventListener("click", () => {
   const heading = document.querySelector(".profile-main h2")
   if (heading) heading.textContent = name
   showToast("Profil demo disimpan di browser")
+})
+
+document.querySelector("[data-admin-profile-save]")?.addEventListener("click", () => {
+  const name = document.querySelector("#admin-name")?.value.trim()
+  const city = document.querySelector("#admin-city")?.value.trim()
+  if (!name) return showToast("Nama Admin tidak boleh kosong")
+  storage.set("pinjaminDemoAdminProfile", JSON.stringify({ name, city }))
+  const heading = document.querySelector(".profile-main h2")
+  if (heading) heading.textContent = name
+  showToast("Profil Admin demo disimpan di browser")
 })
 
 function makeButton(label, className, attribute, value = "") {
