@@ -1,0 +1,7 @@
+project_id = "uljsqrakyulxkhbyvdps"
+
+# Fungsi Edge Pinjam.in memakai slug `make-server-5a56c1fa` (dibuat Figma Make),
+# tetapi sumber lokalnya ada di folder `server/`. Petakan lewat `entrypoint`
+# agar `supabase functions deploy` memperbarui fungsi yang benar.
+[functions.make-server-5a56c1fa]
+entrypoint = "./functions/server/index.ts"
