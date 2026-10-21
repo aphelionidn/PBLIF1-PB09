@@ -5,19 +5,20 @@ import path from 'node:path'
 
 import siteConfiguration from './.figma/make/site.json'
 
+
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === 'development'
 
   return {
-    base: mode === 'production' ? '/PBLIF1-PB09/' : '/',
+    base: process.env.FIGMA_PUBLIC_URL ? `${process.env.FIGMA_PUBLIC_URL}/` : '/',
     build: {
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
     },
     plugins: [
-      react(),
+react(),
       tailwindcss(),
       figmaSiteConfiguration(siteConfiguration),
       figmaErrorOverlayReplay(),
@@ -40,7 +41,7 @@ export default defineConfig(({ mode }) => {
       watch: {
         ignored: [
           '**/.figma/**',
-        ],
+],
       },
     },
     preview: {
@@ -49,8 +50,6 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
-
-// Keep the rest of your file containing `type FigmaSiteConfiguration` and functions exactly as they were below...
 
 type FigmaSiteConfiguration = {
   title?: string

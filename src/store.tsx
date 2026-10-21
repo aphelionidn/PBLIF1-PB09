@@ -145,6 +145,9 @@ function useStoreValue() {
   const [performanceMode, setPerformanceModeState] = useState(
     () => localStorage.getItem("pinjamin.performance") === "true",
   )
+  const [wireframeMode, setWireframeModeState] = useState(
+    () => localStorage.getItem("pinjamin.wireframe") === "true",
+  )
   const [cart, setCart] = useState<CartLine[]>([])
   const [cartDates, setCartDates] = useState<{
     start: string
@@ -202,9 +205,17 @@ function useStoreValue() {
     setPerformanceModeState(enabled)
     localStorage.setItem("pinjamin.performance", String(enabled))
   }
+  const setWireframeMode = (enabled: boolean) => {
+    document.documentElement.classList.toggle("wireframe", enabled)
+    setWireframeModeState(enabled)
+    localStorage.setItem("pinjamin.wireframe", String(enabled))
+  }
   useEffect(() => {
     document.documentElement.classList.toggle("performance-mode", performanceMode)
   }, [performanceMode])
+  useEffect(() => {
+    document.documentElement.classList.toggle("wireframe", wireframeMode)
+  }, [wireframeMode])
   // Terapkan tema + nuansa waktu ke <html>
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)")
@@ -775,6 +786,8 @@ function useStoreValue() {
     setTheme,
     performanceMode,
     setPerformanceMode,
+    wireframeMode,
+    setWireframeMode,
     cart,
     cartDates,
     setCartDates,

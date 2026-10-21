@@ -76,7 +76,7 @@ function ChangePassword({ open, onClose }: { open: boolean; onClose: () => void 
 }
 
 export default function Profile() {
-  const { me, logout, simError, setSimError, theme, setTheme, performanceMode, setPerformanceMode, uploadPhoto, updateProfile, toast } = useStore()
+  const { me, logout, simError, setSimError, theme, setTheme, performanceMode, setPerformanceMode, wireframeMode, setWireframeMode, uploadPhoto, updateProfile, toast } = useStore()
   const [sheet, setSheet] = useState<'edit' | 'pw' | null>(null)
   const [photoBusy, setPhotoBusy] = useState(false)
   const photo = useRef<HTMLInputElement>(null)
@@ -138,6 +138,16 @@ export default function Profile() {
         <Segmented<Theme> value={theme} onChange={setTheme} options={[{ value: 'light', label: 'Terang' }, { value: 'dark', label: 'Gelap' }, { value: 'system', label: 'Ikuti Sistem' }]} className="[&>*]:flex-1" />
       </Glass>
       <WallpaperPicker />
+      <Glass className="flex items-center justify-between gap-4 p-4">
+        <div>
+          <p className="flex items-center gap-1.5 text-[14px] font-semibold"><Icon name="board" className="size-4 text-primary" />Mode wireframe</p>
+          <p className="mt-1 text-[12px] text-ink-2">Tampilkan antarmuka sebagai rancangan monokrom dengan garis tegas dan tanpa dekorasi.</p>
+        </div>
+        <button role="switch" aria-checked={wireframeMode} aria-label="Mode wireframe" onClick={() => setWireframeMode(!wireframeMode)}
+          className={`relative h-8 w-[52px] shrink-0 rounded-full border border-black/15 transition-colors ${wireframeMode ? 'bg-primary' : 'bg-black/15'}`}>
+          <span className={`absolute top-1 size-6 rounded-full bg-white shadow transition-all ${wireframeMode ? 'left-[24px]' : 'left-1'}`} />
+        </button>
+      </Glass>
       <Glass className="flex items-center justify-between gap-4 p-4">
         <div>
           <p className="flex items-center gap-1.5 text-[14px] font-semibold"><Icon name="monitor" className="size-4 text-primary" />Mode performa</p>
