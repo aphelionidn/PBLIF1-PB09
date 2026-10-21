@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peminjaman Saya — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="1transparant.svg">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script type="module" src="assets/js/theme.js"></script>
+  <style>
+    .loans-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 1024px) {
+      .loans-layout {
+        grid-template-columns: minmax(0, 1fr) 380px;
+        align-items: start;
+      }
+    }
+    .loan-row-card {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 1rem;
+      border-radius: var(--radius-xl);
+      background-color: var(--c-surface);
+      border: 1px solid var(--c-border);
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 150ms ease, border-color 150ms ease;
+    }
+    .loan-row-card:hover {
+      background-color: var(--c-surface-muted);
+    }
+    .loan-row-card.is-active {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-primary) 30%, transparent);
+    }
+    .timeline {
+      position: relative;
+      margin-left: 0.5rem;
+      border-left: 2px solid var(--c-border);
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .timeline-item {
+      position: relative;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: calc(-1.25rem - 5px);
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-surface);
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <!-- Desktop Sidebar Container -->
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <!-- Mobile Top Bar -->
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+
+      <!-- Desktop Top Bar -->
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Peminjaman Saya</h1>
+            <p class="page-subtitle">Pantau status pengajuan booking dan riwayat peminjaman kamu.</p>
+          </div>
+          <div class="page-actions">
+            <a href="catalog.html" class="btn btn-primary btn-sm">+ Pinjam Barang</a>
+          </div>
+        </div>
+
+        <!-- Tabs Segmented Control -->
+        <div class="segmented" id="status-tabs" style="max-width: 480px; margin-bottom: 1.25rem;">
+          <button type="button" class="segmented-btn is-active" data-tab="Semua">Semua <span class="segmented-count" id="count-semua">0</span></button>
+          <button type="button" class="segmented-btn" data-tab="Menunggu">Menunggu <span class="segmented-count" id="count-menunggu">0</span></button>
+          <button type="button" class="segmented-btn" data-tab="Aktif">Aktif <span class="segmented-count" id="count-aktif">0</span></button>
+          <button type="button" class="segmented-btn" data-tab="Selesai">Selesai <span class="segmented-count" id="count-selesai">0</span></button>
+        </div>
+
+        <!-- Loans Main Layout -->
+        <div class="loans-layout">
+          <!-- Left: Loan Cards List -->
+          <div id="loans-list" style="display: flex; flex-direction: column; gap: 0.625rem;">
+            <!-- Skeletons -->
+            <div class="card shimmer" style="height: 76px;"></div>
+            <div class="card shimmer" style="height: 76px;"></div>
+            <div class="card shimmer" style="height: 76px;"></div>
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-loans" class="glass card empty-state" style="display: none;">
+            <div class="empty-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>
+            </div>
+            <h3 class="empty-title">Belum ada peminjaman</h3>
+            <p class="empty-desc">Peminjaman yang kamu ajukan dari katalog akan muncul di sini.</p>
+            <div class="empty-action">
+              <a href="catalog.html" class="btn btn-primary btn-sm">Buka Katalog</a>
+            </div>
+          </div>
+
+          <!-- Right: Desktop Side Panel Detail -->
+          <aside class="side-panel" id="desktop-side-panel" style="display: none;">
+            <div class="side-panel-header">
+              <h2 style="font-size: 1.0625rem; font-weight: 600;">Detail Peminjaman</h2>
+              <span id="panel-badge"></span>
+            </div>
+            <div class="side-panel-body" id="panel-content-body"></div>
+            <div class="side-panel-footer" id="panel-actions-footer"></div>
+          </aside>
+        </div>
+      </main>
+
+      <!-- Mobile Bottom Navigation Bar -->
+      <div id="shell-bottombar-mobile"></div>
+    </div>
+  </div>
+
+  <!-- Mobile Detail Overlay Modal -->
+  <div class="overlay-backdrop" id="mobile-detail-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">Detail Peminjaman</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-mobile-detail-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body" id="mobile-detail-body"></div>
+      <div class="modal-footer" id="mobile-detail-footer"></div>
+    </div>
+  </div>
+
+  <!-- Cancel Confirmation Dialog -->
+  <div class="overlay-backdrop" id="cancel-dialog-backdrop" style="display: none;">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title" style="color: var(--c-danger);">Batalkan Booking?</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-cancel-dialog-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9375rem; color: var(--c-ink-2); line-height: 1.5;">
+          Booking <strong id="cancel-loan-code">-</strong> akan dibatalkan dan stok barang akan segera dilepas kembali ke katalog. Tindakan ini tidak dapat dibatalkan.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancel-abort-btn">Kembali</button>
+        <button type="button" class="btn btn-danger" id="cancel-confirm-btn">Ya, Batalkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extension Request Dialog -->
+  <div class="overlay-backdrop" id="ext-dialog-backdrop" style="display: none;">
+    <div class="modal-dialog" style="max-width: 460px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Minta Perpanjangan</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-ext-dialog-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+        <p style="font-size: 0.875rem; color: var(--c-ink-2);">
+          Batas waktu pengembalian saat ini: <strong style="color: var(--c-ink);" id="ext-current-end">-</strong>
+        </p>
+
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background-color: var(--c-surface-muted);">
+          <span style="font-size: 0.875rem; font-weight: 600;">Tambah durasi:</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button type="button" class="btn btn-secondary icon-btn-sm" id="ext-minus-btn">−</button>
+            <span id="ext-days-display" style="width: 60px; text-align: center; font-weight: 700;">1 hari</span>
+            <button type="button" class="btn btn-secondary icon-btn-sm" id="ext-plus-btn">+</button>
+          </div>
+        </div>
+
+        <p style="font-size: 0.8125rem; color: var(--c-ink-2);">
+          Tanggal pengembalian baru: <strong style="color: var(--c-ink);" id="ext-new-end">-</strong>
+          <span id="ext-stock-warning" style="display: none; color: var(--c-danger); font-weight: 600;"> · Stok tidak cukup untuk tanggal tambahan</span>
+        </p>
+
+        <div class="field">
+          <label class="field-label" for="ext-reason">Alasan Perpanjangan</label>
+          <textarea id="ext-reason" class="textarea" rows="3" placeholder="Contoh: Praktikum diperpanjang untuk sesi kedua"></textarea>
+          <span class="field-error" id="ext-error" style="display: none;"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="ext-abort-btn">Batal</button>
+        <button type="button" class="btn btn-primary" id="ext-submit-btn">Kirim Permintaan</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/my-loans.js"></script>
+</body>
+</html>

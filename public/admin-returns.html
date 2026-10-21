@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengembalian Barang — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="1transparant.svg">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script type="module" src="assets/js/theme.js"></script>
+  <style>
+    .cond-radios {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .cond-radios {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .cond-btn {
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--c-border);
+      background-color: var(--c-surface-muted);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--c-ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 150ms ease;
+    }
+    .cond-btn:hover {
+      background-color: var(--c-surface);
+    }
+    .cond-btn.is-baik {
+      border-color: var(--c-success);
+      background-color: var(--c-tint-green);
+      color: var(--c-success);
+    }
+    .cond-btn.is-damaged {
+      border-color: var(--c-danger);
+      background-color: var(--c-tint-red);
+      color: var(--c-danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Pencatatan Pengembalian</h1>
+            <p class="page-subtitle" id="returns-stat-subtitle">0 peminjaman sedang aktif dan belum dikembalikan</p>
+          </div>
+        </div>
+
+        <!-- Returns Table Container -->
+        <div class="table-scroll">
+          <table class="table" id="returns-table">
+            <thead>
+              <tr>
+                <th>Peminjam</th>
+                <th>Barang yang Dipinjam</th>
+                <th>Periode Peminjaman</th>
+                <th>Status</th>
+                <th>Keterlambatan</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="returns-tbody">
+              <tr><td colspan="6" style="text-align: center; padding: 2rem;">Memuat data pengembalian…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="returns-empty" class="glass card empty-state" style="display: none;">
+          <div class="empty-icon-box">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14 4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+          </div>
+          <h3 class="empty-title">Semua barang sudah kembali</h3>
+          <p class="empty-desc">Tidak ada peminjaman yang berstatus Dipinjam atau Terlambat saat ini.</p>
+        </div>
+      </main>
+
+      <div id="shell-bottombar-mobile"></div>
+    </div>
+  </div>
+
+  <!-- Record Return Inspection Modal -->
+  <div class="overlay-backdrop" id="return-modal-backdrop" style="display: none;">
+    <div class="modal-dialog is-wide">
+      <div class="modal-header">
+        <h2 class="modal-title">Pemeriksaan & Pengembalian Barang</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-return-modal-btn" aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <!-- Loan Info Summary Card -->
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 0.875rem 1rem; background-color: var(--c-surface-muted);">
+          <div>
+            <p style="font-size: 0.75rem; color: var(--c-ink-2); font-weight: 500;" id="ret-loan-code">-</p>
+            <p style="font-size: 1rem; font-weight: 700;" id="ret-borrower-name">-</p>
+          </div>
+          <div id="ret-late-status"></div>
+        </div>
+
+        <!-- Items Inspection Rows -->
+        <div>
+          <p style="font-size: 0.8125rem; font-weight: 600; color: var(--c-ink-2); margin-bottom: 0.625rem;">Kondisi Fisik Barang saat Dikembalikan</p>
+          <div id="ret-items-list" style="display: flex; flex-direction: column; gap: 0.875rem;"></div>
+        </div>
+
+        <!-- Return Notes -->
+        <div class="field">
+          <label class="field-label" for="ret-note-input">Catatan Pengembalian</label>
+          <textarea id="ret-note-input" class="textarea" rows="3" placeholder="Wajib diisi jika ada barang dalam kondisi Rusak atau Hilang…"></textarea>
+          <span class="field-helper">Tuliskan kondisi kelengkapan, kabel, adapter, atau cacat baru jika ditemukan.</span>
+          <span class="field-error" id="ret-note-error" style="display: none;"></span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="abort-return-btn">Batal</button>
+        <button type="button" class="btn btn-success" id="submit-return-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+          <span>Simpan & Tandai Kembali</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/admin-returns.js"></script>
+</body>
+</html>

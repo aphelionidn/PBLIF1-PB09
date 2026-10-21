@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Barang — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="1transparant.svg">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script type="module" src="assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Kelola Barang</h1>
+            <p class="page-subtitle" id="items-stat-subtitle">0 jenis barang · 0 kategori</p>
+          </div>
+          <div class="page-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="manage-cats-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12V3h9l9 9-9 9zM8 8h.01"/></svg>
+              <span>Kategori</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="add-item-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Tambah Barang</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter and Search Row -->
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;">
+            <div class="chips-container" id="admin-category-chips"></div>
+            <div class="glass" style="padding: 0.25rem; border-radius: var(--radius-lg); width: 100%; max-width: 320px;">
+              <div class="search-box">
+                <span class="search-box-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg>
+                </span>
+                <input type="text" id="admin-items-search" class="input search-box-input" style="min-height: 38px; font-size: 0.875rem;" placeholder="Cari nama barang…">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items Table Container -->
+        <div class="table-scroll">
+          <table class="table" id="items-table">
+            <thead>
+              <tr>
+                <th>Barang</th>
+                <th>Kategori</th>
+                <th>Stok Total</th>
+                <th>Kondisi</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="items-tbody">
+              <tr><td colspan="5" style="text-align: center; padding: 2rem;">Memuat daftar barang…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="items-empty" class="glass card empty-state" style="display: none;">
+          <div class="empty-icon-box">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>
+          </div>
+          <h3 class="empty-title">Belum ada barang</h3>
+          <p class="empty-desc">Tidak ada barang yang cocok dengan filter pencarian ini.</p>
+        </div>
+      </main>
+
+      <div id="shell-bottombar-mobile"></div>
+    </div>
+  </div>
+
+  <!-- Add / Edit Item Modal -->
+  <div class="overlay-backdrop" id="item-form-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="item-form-title">Tambah Barang</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-item-form-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Photo Upload Preview Box -->
+        <div class="card" style="display: flex; align-items: center; gap: 0.875rem; padding: 0.75rem; border-style: dashed; background: var(--c-surface-muted);">
+          <div class="item-thumb" id="form-photo-preview" style="width: 56px; height: 56px; border-radius: var(--radius-md);">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <p style="font-weight: 600; font-size: 0.875rem;">Foto Barang</p>
+            <p style="font-size: 0.75rem; color: var(--c-ink-2);" id="photo-helper">Format JPG/PNG, maksimal 5MB</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+            <input type="file" id="photo-file-input" accept="image/*" style="display: none;">
+            <button type="button" class="btn btn-secondary btn-sm" id="upload-photo-btn">Unggah</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="delete-photo-btn" style="display: none; color: var(--c-danger);">Hapus</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="item-name-input">Nama Barang</label>
+          <input type="text" id="item-name-input" class="input" placeholder="Mis. Proyektor Epson EB-X400">
+          <span class="field-error" id="err-nama" style="display: none;"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="field">
+            <label class="field-label" for="item-cat-select">Kategori</label>
+            <select id="item-cat-select" class="select"></select>
+            <span class="field-error" id="err-cat" style="display: none;"></span>
+          </div>
+          <div class="field">
+            <label class="field-label" for="item-stock-input">Stok Total</label>
+            <input type="number" id="item-stock-input" class="input" min="1" value="1">
+            <span class="field-error" id="err-stok" style="display: none;"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="item-cond-select">Kondisi Fisik</label>
+          <select id="item-cond-select" class="select">
+            <option value="Baik">Baik</option>
+            <option value="Rusak Ringan">Rusak Ringan</option>
+            <option value="Rusak Berat">Rusak Berat</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="item-desc-input">Deskripsi Barang</label>
+          <textarea id="item-desc-input" class="textarea" rows="3" placeholder="Jelaskan kelengkapan, spesifikasi, atau aksesoris barang…"></textarea>
+          <span class="field-error" id="err-desc" style="display: none;"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="abort-item-form-btn">Batal</button>
+        <button type="button" class="btn btn-primary" id="save-item-form-btn">Simpan Barang</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Categories Modal -->
+  <div class="overlay-backdrop" id="cats-modal-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">Kelola Kategori</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-cats-modal-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div id="cats-list-container" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+
+        <div class="card" style="padding: 0.75rem; background: var(--c-surface-muted);">
+          <label class="field-label" for="new-cat-input">Tambah Kategori Baru</label>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.375rem;">
+            <input type="text" id="new-cat-input" class="input" placeholder="Mis. Alat Praktikum">
+            <button type="button" class="btn btn-primary btn-sm" id="add-cat-btn">Tambah</button>
+          </div>
+          <span class="field-error" id="new-cat-error" style="display: none; margin-top: 0.25rem;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Dialog -->
+  <div class="overlay-backdrop" id="delete-dialog-backdrop" style="display: none;">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title" style="color: var(--c-danger);">Hapus Barang?</h2>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-delete-dialog-btn" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9375rem; color: var(--c-ink-2); line-height: 1.5;">
+          Barang <strong id="delete-item-name">-</strong> akan dihapus dari katalog. Data riwayat peminjaman sebelumnya tetap tersimpan di database.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="abort-delete-btn">Batal</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-btn">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/admin-items.js"></script>
+</body>
+</html>
