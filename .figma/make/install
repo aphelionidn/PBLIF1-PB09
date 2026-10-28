@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# This application has no package dependencies; verify the pinned runtime.
-node --version >/dev/null
