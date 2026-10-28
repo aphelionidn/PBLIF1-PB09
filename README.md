@@ -1,6 +1,6 @@
 # 📦 Pinjam.in — Standalone Vanilla Web Application (1:1 Multi-Page)
 
-Aplikasi peminjaman perlengkapan kelas Politeknik Negeri Batam (Polibatam) yang dibangun menggunakan **100% Vanilla Web Technologies (HTML5, Modern CSS, ES Modules JavaScript)** tanpa dependensi runtime atau build tools (Vite, React, bundler, dll).
+Aplikasi peminjaman perlengkapan kelas Politeknik Negeri Batam (Polibatam).
 
 Folder ini adalah **website utuh yang sepenuhnya mandiri (self-contained)** dan dapat dijalankan langsung di browser, web server lokal, maupun platform hosting statis.
 
