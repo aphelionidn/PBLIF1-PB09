@@ -1,30 +1,19 @@
 {
-  "name": "figma-make-app",
-  "private": true,
+  "name": "pinjamin-vanilla-web",
   "version": "1.0.0",
+  "description": "Pinjam.in — Standalone Vanilla HTML5/CSS3/ES Modules Web Application",
   "type": "module",
+  "main": "serve.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "serve:vanilla": "node scripts/serve-vanilla.mjs",
-    "format": "oxfmt"
+    "start": "node serve.js",
+    "dev": "node serve.js"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.117.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/node": "^22.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^6.0.0",
-    "oxfmt": "^0.2.0",
-    "supabase": "^2.119.0",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.0",
-    "vite": "^8.0.5"
-  }
+  "keywords": [
+    "pinjamin",
+    "vanilla-js",
+    "polibatam",
+    "supabase"
+  ],
+  "author": "Pinjam.in Team",
+  "license": "MIT"
 }

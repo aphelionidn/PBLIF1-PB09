@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifikasi — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/1transparant.svg">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <script src="../assets/js/core/guard.js"></script>
+  <script src="../assets/js/core/theme.js"></script>
+  <style>
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--c-border);
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: background 150ms ease;
+      position: relative;
+    }
+    .notif-item:last-child {
+      border-bottom: none;
+    }
+    .notif-item:hover {
+      background-color: var(--c-surface-muted);
+    }
+    .notif-item.is-unread {
+      background-color: color-mix(in srgb, var(--c-primary) 5%, var(--c-surface));
+    }
+    .notif-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-lg);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .notif-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--c-primary);
+      flex-shrink: 0;
+      margin-top: 0.5rem;
+    }
+    .notif-dot.is-read {
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <div class="mx-auto" style="max-width: 800px;">
+          <!-- Page Header -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h1 class="page-title">Notifikasi</h1>
+              <p class="page-subtitle" id="notif-subtitle">Memuat notifikasi…</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="mark-all-btn" disabled>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+              <span>Tandai semua dibaca</span>
+            </button>
+          </div>
+
+          <!-- Email Sync Note Banner -->
+          <div class="banner banner-info" style="margin-bottom: 1rem;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 7l9 6 9-6"/></svg>
+            <span>Notifikasi penting juga dikirimkan ke email resmi kampus kamu.</span>
+          </div>
+
+          <!-- Notification List Card -->
+          <div class="card" id="notif-card" style="padding: 0; overflow: hidden; margin-bottom: 1.5rem;">
+            <div id="notif-loading" style="padding: 3rem 1.5rem; text-align: center; color: var(--c-ink-2);">
+              <div class="spinner" style="margin: 0 auto 0.75rem auto;"></div>
+              <p>Memuat daftar notifikasi…</p>
+            </div>
+            <div id="notif-empty" style="display: none; padding: 4rem 1.5rem; text-align: center;">
+              <div class="brand-icon-box" style="margin: 0 auto 1rem auto; width: 48px; height: 48px; color: var(--c-ink-2);">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4zM10 20.5a2 2 0 0 0 4 0"/></svg>
+              </div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--c-ink);">Belum ada notifikasi</h3>
+              <p style="margin-top: 0.25rem; font-size: 0.875rem; color: var(--c-ink-2);">Kabar terbaru seputar peminjaman dan pengumuman akan muncul di sini.</p>
+            </div>
+            <div id="notif-items-list"></div>
+          </div>
+
+          <!-- Pagination -->
+          <div id="pagination-container" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"></div>
+        </div>
+      </main>
+    </div>
+
+    <div id="shell-bottombar-mobile"></div>
+  </div>
+
+  <script type="module" src="../assets/js/pages/notifications.js"></script>
+</body>
+</html>

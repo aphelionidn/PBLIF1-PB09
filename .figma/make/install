@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-pnpm install --prefer-offline --no-frozen-lockfile
+# This application has no package dependencies; verify the pinned runtime.
+node --version >/dev/null

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/1transparant.svg">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <script src="../assets/js/core/guard.js" data-roles="Admin"></script>
+  <script src="../assets/js/core/theme.js"></script>
+  <style>
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+      .kpi-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .kpi-card {
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem;
+      border-radius: var(--radius-xl);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      text-decoration: none;
+      color: inherit;
+      transition: all 150ms ease;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .kpi-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-lg);
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--c-ink);
+    }
+    .kpi-label {
+      margin-top: 0.375rem;
+      font-size: 0.8125rem;
+      color: var(--c-ink-2);
+      font-weight: 500;
+    }
+    .chart-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.75rem;
+      height: 200px;
+      padding-top: 1.5rem;
+    }
+    .chart-bar-group {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.375rem;
+    }
+    .chart-bar {
+      width: 100%;
+      max-width: 44px;
+      background: color-mix(in srgb, var(--c-primary) 35%, transparent);
+      border-radius: var(--radius-sm) var(--radius-sm) 2px 2px;
+      transition: height 300ms ease, background 150ms ease;
+    }
+    .chart-bar.is-current {
+      background: var(--c-primary);
+    }
+    .chart-bar:hover {
+      background: var(--c-primary);
+    }
+    .top-item-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <!-- Title -->
+        <div style="margin-bottom: 1.5rem;">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Ringkasan aktivitas peminjaman kelas & inventaris alat.</p>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="kpi-grid">
+          <a href="returns.html" class="kpi-card">
+            <div class="kpi-icon-box" style="background: var(--c-tint-blue); color: var(--c-primary-pressed);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>
+            </div>
+            <div class="kpi-value" id="kpi-active">0</div>
+            <div class="kpi-label">Peminjaman Aktif</div>
+          </a>
+
+          <a href="../pages/queue.html" class="kpi-card">
+            <div class="kpi-icon-box" style="background: var(--c-tint-orange); color: var(--c-warning);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></svg>
+            </div>
+            <div class="kpi-value" id="kpi-pending">0</div>
+            <div class="kpi-label">Menunggu Persetujuan</div>
+          </a>
+
+          <a href="returns.html" class="kpi-card">
+            <div class="kpi-icon-box" style="background: var(--c-tint-red); color: var(--c-danger);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20zM12 10v4M12 17h.01"/></svg>
+            </div>
+            <div class="kpi-value" id="kpi-overdue">0</div>
+            <div class="kpi-label">Terlambat</div>
+          </a>
+
+          <a href="items.html" class="kpi-card">
+            <div class="kpi-icon-box" style="background: var(--c-tint-green); color: var(--c-success);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>
+            </div>
+            <div class="kpi-value" id="kpi-total-items">0</div>
+            <div class="kpi-label" id="kpi-total-sub">Total Barang</div>
+          </a>
+        </div>
+
+        <!-- 2 Columns: Chart & Top Borrowed -->
+        <div class="grid-split" style="--split: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
+          <!-- 8-Week Chart -->
+          <div class="card" style="padding: 1.5rem;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h2 style="font-size: 1.125rem; font-weight: 600; color: var(--c-ink);">Peminjaman per Minggu</h2>
+              <span style="font-size: 0.8125rem; color: var(--c-ink-2);">8 minggu terakhir</span>
+            </div>
+            <div class="chart-box" id="weekly-chart"></div>
+          </div>
+
+          <!-- Top Borrowed Items -->
+          <div class="card" style="padding: 1.5rem;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; color: var(--c-ink); margin-bottom: 1rem;">Paling Sering Dipinjam</h2>
+            <div id="top-items-container">
+              <p style="font-size: 0.875rem; color: var(--c-ink-2);">Memuat data…</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Pending Loans -->
+        <div class="card" style="padding: 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; color: var(--c-ink);">Pengajuan Terbaru</h2>
+            <a href="../pages/queue.html" class="btn btn-ghost btn-sm">Lihat Semua</a>
+          </div>
+          <div id="pending-loans-container">
+            <p style="font-size: 0.875rem; color: var(--c-ink-2);">Memuat pengajuan…</p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <div id="shell-bottombar-mobile"></div>
+  </div>
+
+  <script type="module" src="../assets/js/admin/dashboard.js"></script>
+</body>
+</html>

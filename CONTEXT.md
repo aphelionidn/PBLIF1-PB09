@@ -131,7 +131,7 @@ Admins edit these via AdminRules; the client persists them to KV `rules` via `PU
 
 Single React context (`useStore()`) created via `globalThis.__pinjaminCtx` so it survives HMR.
 Holds: users, items, categories, loans, notifs, current `me`, page routing, cart, favorites,
-toasts, theme (light/dark/system), wallpaper, wireframe mode, simulated date (`simDays`).
+toasts, theme (light/dark/system), wallpaper, simulated date (`simDays`).
 
 Key behaviors (**all domain data now comes from the server** — see §11):
 - **Auth** (`boot`, `login`, `logout`): seeds the server once (only if empty), restores the
@@ -165,8 +165,7 @@ Key behaviors (**all domain data now comes from the server** — see §11):
   sekali ke server. UI: `FavButton` (`ui.tsx`) di kartu `Catalog` & `ItemDetail`, chip "♥ Favorit"
   di filter katalog, dan baris "Favorit" di panel ringkas katalog.
 
-localStorage keys: `pinjamin.theme`, `pinjamin.wall`, `pinjamin.wireframe`, `pinjamin.performance`,
-`pinjamin.favs`, `pinjamin.cart`, and the
+localStorage keys: `pinjamin.theme`, `pinjamin.wall`, `pinjamin.favs`, `pinjamin.cart`, and the
 Supabase session under `pinjamin.auth`. (`pinjamin.rules` is no longer read — rules come from the
 server.)
 

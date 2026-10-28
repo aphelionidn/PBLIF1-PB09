@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Pengguna — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/1transparant.svg">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <script src="../assets/js/core/guard.js" data-roles="Admin"></script>
+  <script src="../assets/js/core/theme.js"></script>
+  <style>
+    .presence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+    .presence-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .presence-dot.is-online {
+      background: var(--c-success);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-success) 30%, transparent);
+    }
+    .table-actions-cell {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.375rem;
+    }
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 50;
+      display: none;
+      justify-content: flex-end;
+    }
+    .drawer-overlay.is-open {
+      display: flex;
+    }
+    .drawer-content {
+      background: var(--c-surface);
+      width: 100%;
+      max-width: 480px;
+      height: 100%;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <!-- Title & Add Button -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h1 class="page-title">Kelola Pengguna</h1>
+            <p class="page-subtitle" id="users-subtitle">Memuat data pengguna…</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="add-user-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Tambah Pengguna</span>
+          </button>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
+          <div class="search-box" style="flex: 1; min-width: 260px;">
+            <span class="search-box-icon">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg>
+            </span>
+            <input type="text" id="user-search-input" class="input search-box-input" placeholder="Cari nama, NIM/NIP, email…">
+          </div>
+          <div class="chips-container" id="role-filter-chips">
+            <button type="button" class="chip is-active" data-role="Semua">Semua</button>
+            <button type="button" class="chip" data-role="Mahasiswa">Mahasiswa</button>
+            <button type="button" class="chip" data-role="Dosen">Dosen</button>
+            <button type="button" class="chip" data-role="Admin">Admin</button>
+          </div>
+        </div>
+
+        <!-- Users Table Card -->
+        <div class="card" style="padding: 0; overflow-x: auto;">
+          <table class="table" style="width: 100%; min-width: 880px;">
+            <thead>
+              <tr>
+                <th>Pengguna</th>
+                <th>NIM / NIP</th>
+                <th>Email</th>
+                <th>Peran</th>
+                <th>Status</th>
+                <th>Terakhir Aktif</th>
+                <th>Lokasi</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 3rem;">
+                  <div class="spinner" style="margin: 0 auto 0.5rem auto;"></div>
+                  <p style="color: var(--c-ink-2); font-size: 0.875rem;">Memuat daftar pengguna…</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <div id="shell-bottombar-mobile"></div>
+  </div>
+
+  <!-- User Detail Drawer -->
+  <div class="drawer-overlay" id="user-detail-drawer">
+    <div class="drawer-content">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between;">
+        <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--c-ink);">Detail Pengguna</h3>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-drawer-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div style="padding: 1.5rem; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div class="avatar" id="drawer-avatar" style="width: 56px; height: 56px; font-size: 1.25rem;">U</div>
+          <div>
+            <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--c-ink);" id="drawer-name">Nama</h4>
+            <p style="font-size: 0.875rem; color: var(--c-ink-2);" id="drawer-email-role">Email · Peran</p>
+          </div>
+        </div>
+
+        <div>
+          <h5 style="font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-ink-2); margin-bottom: 0.75rem;">
+            Riwayat Aktivitas & Sesi
+          </h5>
+          <div id="drawer-logs" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <p style="font-size: 0.875rem; color: var(--c-ink-2);">Memuat riwayat…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Edit User Modal -->
+  <div class="modal-backdrop" id="user-form-modal">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="user-modal-title">Tambah Pengguna</h3>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-user-modal-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <form id="user-form">
+        <input type="hidden" id="form-user-id">
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="field">
+            <label class="field-label" for="form-user-name">Nama Lengkap</label>
+            <input type="text" id="form-user-name" class="input" placeholder="Nama mahasiswa/dosen/admin" required minlength="3">
+          </div>
+          <div class="field">
+            <label class="field-label" for="form-user-nim">NIM atau NIP</label>
+            <input type="text" id="form-user-nim" class="input" placeholder="Contoh: 3312601001" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="form-user-email">Email Resmi Polibatam</label>
+            <input type="email" id="form-user-email" class="input" placeholder="nama@students.polibatam.ac.id" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="form-user-role">Peran (Role)</label>
+            <select id="form-user-role" class="input">
+              <option value="Mahasiswa">Mahasiswa</option>
+              <option value="Dosen">Dosen</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="field" id="form-pw-field">
+            <label class="field-label" for="form-user-pw">Password Awal</label>
+            <input type="password" id="form-user-pw" class="input" placeholder="Minimal 6 karakter">
+            <p style="font-size: 0.75rem; color: var(--c-ink-2); margin-top: 0.25rem;">Kosongkan bila tidak ingin mengubah password saat edit.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-user-modal-btn">Batal</button>
+          <button type="submit" class="btn btn-primary" id="save-user-btn">Simpan Pengguna</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div class="modal-backdrop" id="reset-pw-modal">
+    <div class="modal-content" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Reset Password</h3>
+        <button type="button" class="icon-btn icon-btn-sm" id="close-reset-modal-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <form id="reset-pw-form">
+        <input type="hidden" id="reset-user-id">
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+          <p style="font-size: 0.875rem; color: var(--c-ink-2);" id="reset-target-desc">Masukkan password baru untuk pengguna ini.</p>
+          <div class="field">
+            <label class="field-label" for="reset-new-pw">Password Baru</label>
+            <input type="password" id="reset-new-pw" class="input" placeholder="Minimal 6 karakter" required minlength="6">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-reset-modal-btn">Batal</button>
+          <button type="submit" class="btn btn-primary" id="submit-reset-btn">Reset Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="../assets/js/admin/users.js"></script>
+</body>
+</html>

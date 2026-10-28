@@ -1,5 +1,5 @@
 {
-  "description": "A responsive web app for students, lecturers, and admins to borrow, approve, and manage classroom items with real-time status tracking.",
+  "description": "Automates project setup and deployment verification for Figma imports, ensuring critical issues are flagged and builds are efficiently managed for developers.",
   "robots": {
     "index": false
   },

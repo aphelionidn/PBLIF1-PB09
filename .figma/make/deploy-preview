@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Build in development mode to emit sourcemaps.
-pnpm run build --mode development
-figma make deploy-preview --build-dir dist
+
+build_dir=".figma/make/deploy-preview-dist"
+rm -rf "$build_dir"
+mkdir -p "$build_dir"
+cp -- ./index.html ./404.html "$build_dir"/
+for dir in auth pages admin assets; do
+  cp -R "./$dir" "$build_dir/$dir"
+done
+
+[[ -d "$build_dir" ]] || {
+  echo "Expected build output at $build_dir" >&2
+  exit 1
+}
+
+figma make deploy-preview --build-dir "$build_dir"

@@ -1,17 +1,31 @@
-<!doctype html>
-<html lang="in">
-  <head>
-    <!-- figma:head-start -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pinjam.in</title>
-    <link rel="icon" type="image/svg+xml" href="/1transparant.svg" />
-    <!-- figma:head-end -->
-  </head>
-  <body>
-    <!-- figma:body-start -->
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <!-- figma:body-end -->
-  </body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinjam.in — Memuat…</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/1transparant.svg">
+  <script>
+    (function() {
+      try {
+        var user = JSON.parse(localStorage.getItem('pinjamin.user') || 'null');
+        var token = localStorage.getItem('pinjamin.token');
+        if (user && token) {
+          if (user.role === 'Admin') {
+            window.location.replace('admin/items.html');
+          } else {
+            window.location.replace('pages/catalog.html');
+          }
+        } else {
+          window.location.replace('auth/login.html');
+        }
+      } catch (e) {
+        window.location.replace('auth/login.html');
+      }
+    })();
+  </script>
+</head>
+<body style="font-family: sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #F6F7F9; color: #1C1C1E;">
+  <p>Memuat Pinjam.in…</p>
+</body>
 </html>

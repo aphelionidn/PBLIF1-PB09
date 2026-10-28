@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktivitas Sistem — Pinjam.in</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/1transparant.svg">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <script src="../assets/js/core/guard.js" data-roles="Admin"></script>
+  <script src="../assets/js/core/theme.js"></script>
+</head>
+<body>
+  <div class="mesh"><div class="mesh-color"></div><div class="mesh-dim"></div></div>
+
+  <div class="app-shell">
+    <div id="shell-sidebar"></div>
+
+    <div class="app-main">
+      <header class="top-header-mobile" id="shell-topbar-mobile"></header>
+      <header class="top-header-desktop" id="shell-topbar-desktop"></header>
+
+      <main class="content-body">
+        <!-- Title & Refresh -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h1 class="page-title">Aktivitas Sistem</h1>
+            <p class="page-subtitle">Log audit lengkap seluruh transaksi, perubahan data, dan sesi pengguna.</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="refresh-activity-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            <span>Muat Ulang</span>
+          </button>
+        </div>
+
+        <!-- Filter Bar Card -->
+        <div class="card" style="padding: 1.25rem; margin-bottom: 1.25rem;">
+          <div class="grid-md-2 grid-lg-5" style="gap: 0.875rem;">
+            <div>
+              <label class="field-label" for="filter-q">Pencarian</label>
+              <input type="text" id="filter-q" class="input" placeholder="Cari pelaku, kata kunci, detail…">
+            </div>
+            <div>
+              <label class="field-label" for="filter-user">Pengguna</label>
+              <select id="filter-user" class="input">
+                <option value="semua">Semua Pengguna</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="filter-action">Jenis Aktivitas</label>
+              <select id="filter-action" class="input">
+                <option value="semua">Semua Jenis</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="filter-from">Dari Tanggal</label>
+              <input type="date" id="filter-from" class="input">
+            </div>
+            <div>
+              <label class="field-label" for="filter-to">Sampai Tanggal</label>
+              <input type="date" id="filter-to" class="input">
+            </div>
+          </div>
+
+          <div id="filter-active-summary" style="margin-top: 1rem; display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.8125rem; color: var(--c-ink-2);">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <button type="button" class="chip is-active" id="clear-filters-btn">Hapus Filter</button>
+              <span id="filtered-count-text">0 kejadian ditemukan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Table Card -->
+        <div class="card" style="padding: 0; overflow-x: auto; margin-bottom: 1.25rem;">
+          <table class="table" style="width: 100%; min-width: 840px;">
+            <thead>
+              <tr>
+                <th style="width: 180px;">Waktu Kejadian</th>
+                <th style="width: 220px;">Pelaku</th>
+                <th style="width: 180px;">Aktivitas</th>
+                <th>Detail & Keterangan</th>
+              </tr>
+            </thead>
+            <tbody id="activity-table-body">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 3rem;">
+                  <div class="spinner" style="margin: 0 auto 0.5rem auto;"></div>
+                  <p style="color: var(--c-ink-2); font-size: 0.875rem;">Memuat log aktivitas…</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="activity-pagination" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"></div>
+      </main>
+    </div>
+
+    <div id="shell-bottombar-mobile"></div>
+  </div>
+
+  <script type="module" src="../assets/js/admin/activity.js"></script>
+</body>
+</html>
